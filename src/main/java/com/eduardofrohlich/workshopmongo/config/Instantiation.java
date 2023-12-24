@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.eduardofrohlich.workshopmongo.domain.Post;
 import com.eduardofrohlich.workshopmongo.domain.User;
+import com.eduardofrohlich.workshopmongo.dto.AuthorDTO;
 import com.eduardofrohlich.workshopmongo.repository.PostRepository;
 import com.eduardofrohlich.workshopmongo.repository.UserRepository;
 
@@ -39,11 +40,13 @@ public class Instantiation implements CommandLineRunner{
 		User alex = new User(null, "Alex Green", "alex@gmail.com");
 		User bob = new User(null, "Bob Grey", "bob@gmail.com");
 		
-		Post post1 = new Post(null, sdf.parse("21/02/2020"), "Partiu viagem", "To viajando pra Colombo!", maria);
-		Post post2 = new Post(null, sdf.parse("19/11/2022"),"Bom dia", "Uma ótima sexta a todos!", maria);
+		userRepository.saveAll(Arrays.asList(maria, alex, bob)); //salvar primeiro os usuarios para que tenham um id proprio
+		//depois fazer a copia para o AuthorDTO, aí o ID vai vir corretamente (senao ele fica null)
+	
+		Post post1 = new Post(null, sdf.parse("21/02/2020"), "Partiu viagem", "To viajando pra Colombo!", new AuthorDTO(maria));
+		Post post2 = new Post(null, sdf.parse("19/11/2022"),"Bom dia", "Uma ótima sexta a todos!", new AuthorDTO(maria));
 		
 		
-		userRepository.saveAll(Arrays.asList(maria, alex, bob));
 		postRepository.saveAll(Arrays.asList(post1, post2));
 	}
 
